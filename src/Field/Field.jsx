@@ -1,15 +1,7 @@
-import PropTypes from "prop-types";
 import { FieldLayout } from "./FieldLayout"
 
-export function Field(props) {
-
+export function Field() {
   return (
-    <FieldLayout field={props.field} onFieldClick={props.onFieldClick} />
-
+    <FieldLayout />
   )
 }
-
-Field.propTypes = {
-  field: PropTypes.arrayOf(PropTypes.string),
-  onFieldClick: PropTypes.func,
-};

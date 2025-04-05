@@ -1,23 +1,31 @@
-import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import { store } from '../store';
 import styles from './Information.module.css'
 
-export const InformationLayout = (props) => {
+export const InformationLayout = () => {
+    const [state, setState] = useState(store.getState());
+    useEffect(
+        () => {
+            store.subscribe(() => {
+                setState(store.getState())
+            })
+        }, []
+    )
+    const { currentPlayer, isGameEnded, isDraw } = state;
+
+    const onResetClick = () => {
+        store.dispatch({ type: 'RESTART_GAME' })
+    }
+
     return <div className={styles.informationLayout}>
         <div className={styles.info}>
-            {props.isGameEnded
-                ? `Победа: ${props.currentPlayer}`
-                : props.isDraw
+            {isGameEnded
+                ? `Победа: ${currentPlayer}`
+                : isDraw
                     ? 'Ничья'
-                    : `Ходит: ${props.currentPlayer}`
+                    : `Ходит: ${currentPlayer}`
             }
         </div>
-        <button className={styles.startButton} onClick={props.onResetClick}>Начать заново</button>
+        <button className={styles.startButton} onClick={onResetClick}>Начать заново</button>
     </div>
 }
-
-InformationLayout.propTypes = {
-    currentPlayer: PropTypes.string,
-    onResetClick: PropTypes.func,
-    isGameEnded: PropTypes.bool,
-    isDraw: PropTypes.bool,
-};
